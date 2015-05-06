@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "stocks.h"
 
 @interface SecondViewController : UIViewController
 
@@ -18,10 +19,21 @@
 @property (weak, nonatomic) IBOutlet UITextField *minimumGainPercentage;
 @property (weak, nonatomic) IBOutlet UISlider *tradeFrequencySlider;
 
+@property BOOL isRunning;
+@property BOOL timerStarted;
+@property NSTimeInterval timeInterval;
+@property NSTimer *timer;
+@property stocks *tradeThis;
+@property double gainLoss;
+@property NSNumber *principal;
+
 
 - (IBAction)setTradeFrequency:(id)sender;
 - (IBAction)startAlgorithm:(id)sender;
 - (IBAction)stopAlgorithm:(id)sender;
+
+-(void)startTimer;
+- (void)updatePrice;
 
 @end
 

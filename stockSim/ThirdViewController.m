@@ -8,6 +8,7 @@
 
 #import "ThirdViewController.h"
 #import "TabBarViewController.h"
+#import "portfolio.h"
 
 @interface ThirdViewController ()
 
@@ -65,6 +66,15 @@
 }
 */
 
-- (IBAction)reset:(id)sender {
+- (IBAction)reset:(id)sender
+{
+    portfolio *tempAccount = [portfolio currentPortfolio];
+    
+    tempAccount.stockList = [[NSMutableArray alloc] init];
+    tempAccount.balance = [NSNumber numberWithDouble:5000.0];
+    tempAccount.tradeCount = [NSNumber numberWithInt:0];
+    tempAccount.gainLoss = [NSNumber numberWithDouble:0.00];
+    
+    [self viewWillAppear:nil];
 }
 @end

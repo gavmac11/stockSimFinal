@@ -10,7 +10,7 @@
 
 @interface portfolio : NSObject
 
-@property (nonatomic, strong) NSMutableArray *stocks;
+@property (nonatomic, strong) NSMutableArray *stockList;
 @property (strong, nonatomic) NSNumber *balance;
 @property (strong, nonatomic) NSNumber *tradeCount;
 @property (strong, nonatomic) NSNumber *gainLoss;
