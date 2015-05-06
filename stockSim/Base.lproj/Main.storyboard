@@ -130,6 +130,12 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Order Complete" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wUD-dz-wBW">
+                                <rect key="frame" x="99" y="419" width="123" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -138,8 +144,10 @@
                         <outlet property="buySellSegmented" destination="VvL-D5-4Lw" id="hMD-hm-Esr"/>
                         <outlet property="limitPrice" destination="drq-uj-36F" id="kxy-Iw-O5N"/>
                         <outlet property="marketLimitSegmented" destination="7L8-ui-3ue" id="xas-PA-Mdj"/>
+                        <outlet property="orderComplete" destination="wUD-dz-wBW" id="GVd-9M-CuL"/>
                         <outlet property="orderShares" destination="DnX-5v-qzq" id="8cm-Bt-IhH"/>
                         <outlet property="orderTicker" destination="5oN-ts-BxE" id="sYO-1F-9uz"/>
+                        <outlet property="placeOrderButton" destination="5AE-Y6-QnC" id="SzL-KR-od8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUR-Bb-rmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

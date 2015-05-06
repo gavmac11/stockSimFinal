@@ -21,6 +21,12 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    _orderComplete.hidden = TRUE;
+    _placeOrderButton.hidden = FALSE;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -63,6 +69,11 @@
     {
         
     }
+    
+    _orderComplete.hidden = FALSE;
+    _orderShares.text = @"";
+    _orderTicker.text = @"";
+    _placeOrderButton.hidden = TRUE;
     
 }
 

@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *orderShares;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *marketLimitSegmented;
 @property (weak, nonatomic) IBOutlet UITextField *limitPrice;
+@property (weak, nonatomic) IBOutlet UILabel *orderComplete;
+@property (weak, nonatomic) IBOutlet UIButton *placeOrderButton;
 
 
 - (IBAction)marketOrLimitOrder:(id)sender;

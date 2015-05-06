@@ -7,6 +7,8 @@
 //
 
 #import "FirstViewController.h"
+#import "portfolio.h"
+#import "stocks.h"
 
 @interface FirstViewController ()
 
@@ -29,8 +31,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //temp
-    return 5;
+    NSInteger rowCount = 0;
+    
+    for (int i = 0; i < [[[portfolio currentPortfolio] stockList] count]; i++)
+    {
+        if ([[[[portfolio currentPortfolio] stockList] objectAtIndex:i] stillOwn] == TRUE)
+        {
+            rowCount++;
+        }
+    }
+    
+    return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

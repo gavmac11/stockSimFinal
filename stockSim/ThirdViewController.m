@@ -9,6 +9,7 @@
 #import "ThirdViewController.h"
 #import "TabBarViewController.h"
 #import "portfolio.h"
+#import "stocks.h"
 
 @interface ThirdViewController ()
 
@@ -44,8 +45,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //return [_tradeHistory count];
-    return 0;
+    NSInteger rowCount = 0;
+    
+    for (int i = 0; i < [[[portfolio currentPortfolio] stockList] count]; i++)
+    {
+        if ([[[[portfolio currentPortfolio] stockList] objectAtIndex:i] stillOwn] == FALSE)
+        {
+            rowCount++;
+        }
+    }
+    
+    return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
