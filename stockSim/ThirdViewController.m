@@ -16,7 +16,7 @@
 @end
 
 @implementation ThirdViewController
-@synthesize list;
+
 
 - (void)viewDidLoad
 {
@@ -35,6 +35,8 @@
     _currentBalance.text = [[[portfolio currentPortfolio] balance] stringValue];
     _tradeCount.text = [[[portfolio currentPortfolio] tradeCount] stringValue];
     _currentGainLoss.text = [[[portfolio currentPortfolio] gainLoss] stringValue];
+    
+    [_historyTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,7 +62,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell; //INITIALIZE
+    NSMutableArray *list = [[portfolio currentPortfolio] stockList];
+    for (int i = 0; i < [list count]; i++)
+    {
+        if ([[list objectAtIndex:i] stillOwn] == TRUE)
+        {
+            [list removeObjectAtIndex:i];
+        }
+    }
+    
+    static NSString *CellIdentifier = @"CellIdentifier2";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    UILabel *tick = (UILabel*)[cell.contentView viewWithTag:1];
+    [tick setText:[[list objectAtIndex:indexPath.row] tickerSymbol]];
+    
+    UILabel *price = (UILabel*)[cell.contentView viewWithTag:2];
+    [price setText:[[[list objectAtIndex:indexPath.row] currentPrice] stringValue]];
+    
+    UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
+    [gl setText:[[[list objectAtIndex:indexPath.row] gainLoss] stringValue]];
     
     return cell;
 }

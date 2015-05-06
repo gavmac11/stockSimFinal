@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *tradeCount;
 @property (weak, nonatomic) IBOutlet UITableView *historyTableView;
 
-@property (strong) portfolio *list;
+
 
 
 - (IBAction)reset:(id)sender;

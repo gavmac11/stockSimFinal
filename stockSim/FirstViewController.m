@@ -23,6 +23,18 @@
     _currentPositions = [[portfolio alloc] init];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSMutableArray *list = [[portfolio currentPortfolio] stockList];
+    for (int i = 0; i < [list count]; i++)
+    {
+        [[[[portfolio currentPortfolio] stockList] objectAtIndex:i] updateCurrentPrice];
+    }
+    
+    
+    [_positionsTable reloadData];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -46,7 +58,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell; //INITIALIZE
+    NSMutableArray *list = [[portfolio currentPortfolio] stockList];
+    for (int i = 0; i < [list count]; i++)
+    {
+        if ([[list objectAtIndex:i] stillOwn] == FALSE)
+        {
+            [list removeObjectAtIndex:i];
+        }
+    }
+    
+    static NSString *CellIdentifier = @"CellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    UILabel *tick = (UILabel*)[cell.contentView viewWithTag:1];
+    [tick setText:[[list objectAtIndex:indexPath.row] tickerSymbol]];
+    
+    UILabel *price = (UILabel*)[cell.contentView viewWithTag:2];
+    [price setText:[[[list objectAtIndex:indexPath.row] currentPrice] stringValue]];
+    
+    UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
+    [gl setText:[[[list objectAtIndex:indexPath.row] gainLoss] stringValue]];
     
     return cell;
 }
