@@ -7,18 +7,21 @@
 //
 
 #import "ThirdViewController.h"
+#import "TabBarViewController.h"
 
 @interface ThirdViewController ()
 
 @end
 
 @implementation ThirdViewController
+@synthesize list;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    //Initialize tradeHistory array here!!!!!!!!!!!!!!!!
+    list = [portfolio currentPortfolio];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,7 +32,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_tradeHistory count];
+    //return [_tradeHistory count];
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

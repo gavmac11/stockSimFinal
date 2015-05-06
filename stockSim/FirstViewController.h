@@ -15,17 +15,5 @@
 @property portfolio *currentPositions;
 
 
-//Detail View IB Connections
-@property (weak, nonatomic) IBOutlet UISegmentedControl *buySellSegmented;
-@property (strong, nonatomic) IBOutlet UITextField *orderTicker;
-@property (weak, nonatomic) IBOutlet UITextField *orderShares;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *marketLimitSegmented;
-@property (weak, nonatomic) IBOutlet UITextField *limitPrice;
-
-
-- (IBAction)marketOrLimitOrder:(id)sender;
-
-- (IBAction)placeOrder:(id)sender;
-
 @end
 

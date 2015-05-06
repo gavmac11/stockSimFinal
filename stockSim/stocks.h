@@ -11,10 +11,12 @@
 
 @interface stocks : NSObject
 
-@property NSString *ticker;
-@property NSString *priceBoughtAt;
+@property NSString *tickerSymbol;
+@property NSNumber *priceBoughtAt;
+@property NSNumber *currentPrice;
 @property YQL *yql;
 
 - (id)initWithTicker:(NSString*)ticker :(BOOL)marketOrder;
+- (void)updateCurrentPrice;
 
 @end

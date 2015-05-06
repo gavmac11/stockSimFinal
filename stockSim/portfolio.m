@@ -11,12 +11,30 @@
 
 @implementation portfolio
 
++(portfolio *) currentPortfolio
+{
+    static portfolio *currentPortfolio = nil;
+    
+    if (!currentPortfolio)
+    {
+        currentPortfolio = [[super allocWithZone:nil] init];
+    }
+    
+    return currentPortfolio;
+}
+
++(id) allocWithZone:(struct _NSZone *)zone
+{
+    return [self currentPortfolio];
+}
+
 - (id)init
 {
     self = [super init];
     
     if (self)
     {
+        //Set instance files here!
         _stocks = [[NSMutableArray alloc] init];
     }
     

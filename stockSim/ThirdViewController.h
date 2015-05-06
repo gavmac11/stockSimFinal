@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "portfolio.h"
+#import "TabBarViewController.h"
 
 @interface ThirdViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -15,8 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *tradeCount;
 @property (weak, nonatomic) IBOutlet UITableView *historyTableView;
 
-
-@property NSMutableArray* tradeHistory;
+@property (strong) portfolio *list;
 
 
 - (IBAction)reset:(id)sender;

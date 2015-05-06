@@ -27,28 +27,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)marketOrLimitOrder:(id)sender
-{
-    if ([_marketLimitSegmented selectedSegmentIndex] == 1)
-    {
-        [_limitPrice setEnabled:true];
-        [_limitPrice setHidden:FALSE];
-    }
-    else
-    {
-        [_limitPrice setEnabled:FALSE];
-        [_limitPrice setHidden:true];
-    }
-}
-
-- (IBAction)placeOrder:(id)sender
-{
-    if (_marketLimitSegmented.selectedSegmentIndex == 0)
-    {
-        [_currentPositions addStock:_orderTicker.text :true];
-    }
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //temp

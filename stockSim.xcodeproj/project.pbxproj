@@ -20,6 +20,7 @@
 		342362C51ADBFCDD002BD401 /* YQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 342362C41ADBFCDD002BD401 /* YQL.m */; };
 		34D6CBCB1AE060A200134F52 /* stocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D6CBCA1AE060A200134F52 /* stocks.m */; };
 		34D6CBCE1AE0629400134F52 /* portfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D6CBCD1AE0629400134F52 /* portfolio.m */; };
+		34FDCB611AF9CF4C003EA0BC /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FDCB601AF9CF4C003EA0BC /* DetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		34D6CBCA1AE060A200134F52 /* stocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stocks.m; sourceTree = "<group>"; };
 		34D6CBCC1AE0629400134F52 /* portfolio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = portfolio.h; sourceTree = "<group>"; };
 		34D6CBCD1AE0629400134F52 /* portfolio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = portfolio.m; sourceTree = "<group>"; };
+		34FDCB5F1AF9CF4C003EA0BC /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		34FDCB601AF9CF4C003EA0BC /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 				342362B91AD83384002BD401 /* TabBarViewController.m */,
 				342362171AD73284002BD401 /* FirstViewController.h */,
 				342362181AD73284002BD401 /* FirstViewController.m */,
+				34FDCB5F1AF9CF4C003EA0BC /* DetailViewController.h */,
+				34FDCB601AF9CF4C003EA0BC /* DetailViewController.m */,
 				3423621A1AD73284002BD401 /* SecondViewController.h */,
 				3423621B1AD73284002BD401 /* SecondViewController.m */,
 				342362391AD751F2002BD401 /* ThirdViewController.h */,
@@ -254,6 +259,7 @@
 				34D6CBCB1AE060A200134F52 /* stocks.m in Sources */,
 				342362161AD73284002BD401 /* AppDelegate.m in Sources */,
 				342362191AD73284002BD401 /* FirstViewController.m in Sources */,
+				34FDCB611AF9CF4C003EA0BC /* DetailViewController.m in Sources */,
 				34D6CBCE1AE0629400134F52 /* portfolio.m in Sources */,
 				342362BA1AD83384002BD401 /* TabBarViewController.m in Sources */,
 				342362131AD73284002BD401 /* main.m in Sources */,

@@ -13,6 +13,35 @@
 
 @implementation YQL
 
++(YQL *) currentYQL
+{
+    static YQL *currentYQL = nil;
+    
+    if (!currentYQL)
+    {
+        currentYQL = [[super allocWithZone:nil] init];
+    }
+    
+    return currentYQL;
+}
+
++(id) allocWithZone:(struct _NSZone *)zone
+{
+    return [self currentYQL];
+}
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        //Set instance files here!
+    }
+    
+    return self;
+}
+
 - (NSDictionary *) query: (NSString *)statement
 {
     NSString *query = [NSString stringWithFormat:@"%@%@%@", QUERY_PREFIX, [statement stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding], QUERY_SUFFIX];

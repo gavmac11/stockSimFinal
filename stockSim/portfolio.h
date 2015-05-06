@@ -12,6 +12,10 @@
 
 @property (nonatomic, strong) NSMutableArray *stocks;
 
+
+//Singleton
++(portfolio *) currentPortfolio;
+
 - (void) addStock:(NSString *)ticker :(BOOL)marketOrder;
 
 @end
