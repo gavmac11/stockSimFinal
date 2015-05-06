@@ -20,8 +20,19 @@
 {
     [super viewDidLoad];
     
-    list = [portfolio currentPortfolio];
+    //list = [portfolio currentPortfolio];
     
+    _currentBalance.text = [[[portfolio currentPortfolio] balance] stringValue];
+    _tradeCount.text = [[[portfolio currentPortfolio] tradeCount] stringValue];
+    _currentGainLoss.text = [[[portfolio currentPortfolio] gainLoss] stringValue];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    _currentBalance.text = [[[portfolio currentPortfolio] balance] stringValue];
+    _tradeCount.text = [[[portfolio currentPortfolio] tradeCount] stringValue];
+    _currentGainLoss.text = [[[portfolio currentPortfolio] gainLoss] stringValue];
 }
 
 - (void)didReceiveMemoryWarning

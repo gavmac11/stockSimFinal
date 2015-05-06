@@ -10,6 +10,9 @@
 #import "stocks.h"
 
 @implementation portfolio
+@synthesize balance;
+@synthesize tradeCount;
+@synthesize gainLoss;
 
 +(portfolio *) currentPortfolio
 {
@@ -36,6 +39,9 @@
     {
         //Set instance files here!
         _stocks = [[NSMutableArray alloc] init];
+        balance = [NSNumber numberWithDouble:5000.00];
+        tradeCount = [NSNumber numberWithInt:0];
+        gainLoss = [NSNumber numberWithDouble:0.00];
     }
     
     return self;
@@ -54,7 +60,7 @@
 {
     if (marketOrder == true)
     {
-        for (int i; i < [_stocks count]; i++)
+        for (int i = 0; i < [_stocks count]; i++)
         {
             //Find the ticker, not case sensitive
             if ([[[_stocks objectAtIndex:i] tickerSymbol] caseInsensitiveCompare:ticker] == NSOrderedSame)

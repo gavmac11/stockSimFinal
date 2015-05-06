@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "portfolio.h"
+#import "ThirdViewController.h"
 
 @interface DetailViewController ()
 
@@ -42,15 +43,27 @@
 
 - (IBAction)placeOrder:(id)sender
 {
-    //If buy
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    NSNumber *myNumber = [f numberFromString:_orderShares.text];
+    
+    //If Market buy
     if (_marketLimitSegmented.selectedSegmentIndex == 0)
     {
-        [[portfolio currentPortfolio] addStock:_orderTicker.text :true];
+        //if buying
+        if (_buySellSegmented.selectedSegmentIndex == 0)
+        {
+            [[portfolio currentPortfolio] addStock:_orderTicker.text :true :myNumber];
+        }
+        else //if selling
+        {
+            [[portfolio currentPortfolio] sellStock:_orderTicker.text :TRUE :myNumber];
+        }
     }
-    else
+    else //Limit Buy
     {
         
     }
+    
 }
 
 /*

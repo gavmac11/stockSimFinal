@@ -8,6 +8,7 @@
 
 #import "stocks.h"
 #import "YQL.h"
+#import "portfolio.h"
 
 @implementation stocks
 @synthesize tickerSymbol;
@@ -29,10 +30,12 @@
         priceBoughtAt = [[NSNumber alloc]init];
         currentPrice = [[NSNumber alloc]init];
         numberOfShares = numShares;
-        numberOfSharesSold = 0;
-        gainLoss = 0;
+        numberOfSharesSold = [NSNumber numberWithInt:0];
+        gainLoss = [NSNumber numberWithFloat:0.0];
         stillOwn = TRUE;
         yql = [YQL currentYQL];
+        
+        
         
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
         
@@ -70,6 +73,15 @@
                     
                     priceBoughtAt = [formatter numberFromString:marketPrice];
                     [self updateCurrentPrice];
+                    
+                    portfolio *temp = [portfolio currentPortfolio];
+                    
+                    //Update account balance
+                    temp.balance = [NSNumber numberWithDouble:([temp.balance doubleValue] - ([numberOfShares doubleValue] * [currentPrice doubleValue]))];
+                    
+                    //update account number of trades
+                    temp.tradeCount = [NSNumber numberWithInt:([temp.tradeCount intValue] + 1)];
+                    
                     
                 }
                 else
@@ -126,34 +138,63 @@
     }
     else
     {
-        if (([numberOfShares intValue]- [numberOfSharesSold intValue]) > 0)
+        NSNumber *sharesLeftAfterSale = [NSNumber numberWithInt:([numberOfShares intValue]- [numShares intValue])];
+        [self updateCurrentPrice];
+        
+        if ([sharesLeftAfterSale intValue] > 0)
         {
-            [self updateCurrentPrice];
             
-            NSNumber *temp = [NSNumber numberWithInt:([numberOfShares intValue]- [numberOfSharesSold intValue])];
-            numberOfShares = temp;
+            numberOfShares = sharesLeftAfterSale;
             
-            //difference between bought and sold
-            temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
+            //difference between bought and sold in price
+            NSNumber *temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
             
+            //gain/loss temp
             NSNumber *temp2 = [NSNumber numberWithFloat:([temp floatValue] * [numShares floatValue])];
             
+            //Update gain/loss on this stock
             gainLoss = [NSNumber numberWithFloat:([temp2 floatValue] + [gainLoss floatValue])];
+            
+            //update account gain/loss
+            portfolio *tempAccount = [portfolio currentPortfolio];
+            tempAccount.gainLoss = [NSNumber numberWithDouble:([tempAccount.gainLoss doubleValue] + [gainLoss doubleValue])];
+            
+            //update account trade count
+            tempAccount.tradeCount = [NSNumber numberWithInt:([tempAccount.tradeCount intValue] + 1)];
+            
+            //selling value
+            NSNumber *sellValue = [NSNumber numberWithDouble:([numShares doubleValue] * [currentPrice doubleValue])];
+            //Update account balance
+            tempAccount.balance = [NSNumber numberWithDouble:([tempAccount.balance doubleValue] + [sellValue doubleValue])];
             
         }
-        else if (([numberOfShares intValue]- [numberOfSharesSold intValue]) == 0)
+        else if ([sharesLeftAfterSale intValue] == 0)
         {
-            [self updateCurrentPrice];
             
-            NSNumber *temp = [NSNumber numberWithInt:([numberOfShares intValue]- [numberOfSharesSold intValue])];
-            numberOfShares = temp;
+            numberOfShares = sharesLeftAfterSale;
             
             //difference between bought and sold
-            temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
+            NSNumber *temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
             
+            //gain/loss temp
             NSNumber *temp2 = [NSNumber numberWithFloat:([temp floatValue] * [numShares floatValue])];
             
+            //update gain/loss on this stock
             gainLoss = [NSNumber numberWithFloat:([temp2 floatValue] + [gainLoss floatValue])];
+            
+            //update account gain/loss
+            portfolio *tempAccount = [portfolio currentPortfolio];
+            tempAccount.gainLoss = [NSNumber numberWithDouble:([tempAccount.gainLoss doubleValue] + [gainLoss doubleValue])];
+            
+            //update account trade count
+            tempAccount.tradeCount = [NSNumber numberWithInt:([tempAccount.tradeCount intValue] + 1)];
+            
+            
+            
+            //selling value
+            NSNumber *sellValue = [NSNumber numberWithDouble:([numShares doubleValue] * [currentPrice doubleValue])];
+            //Update account balance
+            tempAccount.balance = [NSNumber numberWithDouble:([tempAccount.balance doubleValue] + [sellValue doubleValue])];
             
             stillOwn = false;
         }
