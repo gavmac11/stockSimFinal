@@ -42,9 +42,14 @@
 
 - (IBAction)placeOrder:(id)sender
 {
+    //If buy
     if (_marketLimitSegmented.selectedSegmentIndex == 0)
     {
         [[portfolio currentPortfolio] addStock:_orderTicker.text :true];
+    }
+    else
+    {
+        
     }
 }
 

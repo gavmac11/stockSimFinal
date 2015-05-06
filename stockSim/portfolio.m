@@ -41,12 +41,31 @@
     return self;
 }
 
-- (void) addStock:(NSString *)ticker :(BOOL)marketOrder
+- (void) addStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
 {
     if (marketOrder == true)
     {
-        stocks *temp = [[stocks alloc]initWithTicker:ticker :marketOrder];
+        stocks *temp = [[stocks alloc]initWithTicker:ticker :marketOrder :numShares];
         [_stocks addObject:temp];
+    }
+}
+
+- (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
+{
+    if (marketOrder == true)
+    {
+        for (int i; i < [_stocks count]; i++)
+        {
+            //Find the ticker, not case sensitive
+            if ([[[_stocks objectAtIndex:i] tickerSymbol] caseInsensitiveCompare:ticker] == NSOrderedSame)
+            {
+                //Only sell if we still own it
+                if ([[_stocks objectAtIndex:i] stillOwn] == TRUE)
+                {
+                    [[_stocks objectAtIndex:i] sellStock:ticker :marketOrder :numShares];
+                }
+            }
+        }
     }
 }
 

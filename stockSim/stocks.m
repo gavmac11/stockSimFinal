@@ -13,9 +13,13 @@
 @synthesize tickerSymbol;
 @synthesize currentPrice;
 @synthesize priceBoughtAt;
+@synthesize numberOfShares;
+@synthesize numberOfSharesSold;
+@synthesize gainLoss;
+@synthesize stillOwn;
 @synthesize yql;
 
--(id)initWithTicker:(NSString *)ticker :(BOOL)marketOrder
+-(id)initWithTicker:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
 {
     self = [super init];
     
@@ -24,6 +28,10 @@
         tickerSymbol = ticker;
         priceBoughtAt = [[NSNumber alloc]init];
         currentPrice = [[NSNumber alloc]init];
+        numberOfShares = numShares;
+        numberOfSharesSold = 0;
+        gainLoss = 0;
+        stillOwn = TRUE;
         yql = [YQL currentYQL];
         
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
@@ -61,11 +69,12 @@
                     marketPrice = [marketPrice stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                     
                     priceBoughtAt = [formatter numberFromString:marketPrice];
+                    [self updateCurrentPrice];
                     
                 }
                 else
                 {
-                    //
+                   // NSLog(@"invalid tick");
                 }
             }
             
@@ -105,6 +114,48 @@
             
             currentPrice = [formatter numberFromString:marketPrice];
             break;
+        }
+    }
+}
+
+- (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
+{
+    if (stillOwn == false)
+    {
+        return;
+    }
+    else
+    {
+        if (([numberOfShares intValue]- [numberOfSharesSold intValue]) > 0)
+        {
+            [self updateCurrentPrice];
+            
+            NSNumber *temp = [NSNumber numberWithInt:([numberOfShares intValue]- [numberOfSharesSold intValue])];
+            numberOfShares = temp;
+            
+            //difference between bought and sold
+            temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
+            
+            NSNumber *temp2 = [NSNumber numberWithFloat:([temp floatValue] * [numShares floatValue])];
+            
+            gainLoss = [NSNumber numberWithFloat:([temp2 floatValue] + [gainLoss floatValue])];
+            
+        }
+        else if (([numberOfShares intValue]- [numberOfSharesSold intValue]) == 0)
+        {
+            [self updateCurrentPrice];
+            
+            NSNumber *temp = [NSNumber numberWithInt:([numberOfShares intValue]- [numberOfSharesSold intValue])];
+            numberOfShares = temp;
+            
+            //difference between bought and sold
+            temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
+            
+            NSNumber *temp2 = [NSNumber numberWithFloat:([temp floatValue] * [numShares floatValue])];
+            
+            gainLoss = [NSNumber numberWithFloat:([temp2 floatValue] + [gainLoss floatValue])];
+            
+            stillOwn = false;
         }
     }
 }

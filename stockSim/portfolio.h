@@ -16,6 +16,7 @@
 //Singleton
 +(portfolio *) currentPortfolio;
 
-- (void) addStock:(NSString *)ticker :(BOOL)marketOrder;
+- (void) addStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
+- (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
 
 @end

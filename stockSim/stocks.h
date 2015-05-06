@@ -14,9 +14,15 @@
 @property NSString *tickerSymbol;
 @property NSNumber *priceBoughtAt;
 @property NSNumber *currentPrice;
+@property NSNumber *numberOfShares;
+@property NSNumber *numberOfSharesSold;
+@property NSNumber *gainLoss;
+@property BOOL stillOwn;
 @property YQL *yql;
 
-- (id)initWithTicker:(NSString*)ticker :(BOOL)marketOrder;
+- (id)initWithTicker:(NSString*)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
 - (void)updateCurrentPrice;
+
+- (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
 
 @end
