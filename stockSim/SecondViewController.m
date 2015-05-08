@@ -18,18 +18,22 @@
 @implementation SecondViewController
 @synthesize isRunning;
 @synthesize timeInterval;
-@synthesize timer;
-@synthesize timerStarted;
 @synthesize tradeThis;
 @synthesize gainLoss;
 @synthesize principal;
+@synthesize canBuy;
+@synthesize stopLoss;
+@synthesize gainSell;
+@synthesize timer;
+@synthesize sharesBought;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     isRunning = FALSE;
-    timerStarted = FALSE;
+    canBuy = TRUE;
+    principal = [[portfolio currentPortfolio] balance];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -37,6 +41,11 @@
     NSNumber *num = [NSNumber numberWithDouble:gainLoss];
     _currentGainLoss.text = [num stringValue];
     _principalAmount.text = [principal stringValue];
+    
+    if (!isRunning)
+    {
+        principal = [[portfolio currentPortfolio] balance];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,13 +56,15 @@
 
 - (IBAction)setTradeFrequency:(id)sender
 {
-    if (timerStarted == TRUE)
+    NSNumber *value = [NSNumber numberWithDouble:_tradeFrequencySlider.value];
+    
+    timeInterval = [value doubleValue];
+    
+    if (isRunning == TRUE)
     {
         [timer invalidate];
-        timerStarted = FALSE;
+        timer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(stepAlgorithm) userInfo:nil repeats:YES];
     }
-    
-    timeInterval = _tradeFrequencySlider.value;
 }
 
 -(void)updatePrice
@@ -61,124 +72,165 @@
     [tradeThis updateCurrentPrice];
 }
 
--(void)startTimer
+- (void)stepAlgorithm
 {
-    
-    [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(updatePrice) userInfo:nil repeats:YES];
-    timerStarted = TRUE;
-}
-
-- (IBAction)startAlgorithm:(id)sender
-{
-    //Check if ticker symbol is valid
-    //Check if principal is valid
-    //Check if stop loss percentage set
-    //Check if minimum gain percentage set
-    
-    if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+    if (isRunning == TRUE)
     {
-        return;
-    }
-    else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
-    {
-        return;
-    }
-    else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
-    {
-        return;
-    }
-    else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
-    {
-        return;
-    }
-    else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
-    {
-        return;
-    }
-    
-    _tickerSymbol.userInteractionEnabled = FALSE;
-    _principalAmount.userInteractionEnabled = FALSE;
-    _currentGainLoss.userInteractionEnabled = FALSE;
-    _stopLossPercentage.userInteractionEnabled = FALSE;
-    _minimumGainPercentage.userInteractionEnabled = FALSE;
-    
-    _tradeFrequencySlider.userInteractionEnabled = TRUE;
-    isRunning = TRUE;
-    
-    while (isRunning == TRUE)
-    {
-        
-        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-        principal = [f numberFromString:_principalAmount.text];
-        NSNumber *stopLoss = [f numberFromString:_stopLossPercentage.text];
-        NSNumber *gainSell = [f numberFromString:_minimumGainPercentage.text];
-        
-        //While you have money
-        while ([principal doubleValue] >= 0.0)
+        //if you have money
+        if ([principal doubleValue] >= 0.0 && canBuy == TRUE)
         {
             //Find how many shares we can buy
-            tradeThis = [[stocks alloc] initWithTicker:_tickerSymbol.text :TRUE :[NSNumber numberWithInt:1]];
             NSNumber *sharesToBuy = [NSNumber numberWithDouble:([principal doubleValue] / [tradeThis.currentPrice doubleValue])];
             //Round down so we cant overspend
             sharesToBuy = [NSNumber numberWithInt:(floor([sharesToBuy doubleValue]))];
             
-            //Buy
-            [[portfolio currentPortfolio] addStock:_tickerSymbol.text :TRUE :sharesToBuy];
-            //Cost to buy
-            NSNumber *cost = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
-            
-            //Update principal
-            principal = [NSNumber numberWithDouble:([principal doubleValue] - [cost doubleValue])];
-            
-            if (timerStarted == FALSE)
+            //Buy if we have enough money to buy a share
+            if ([sharesToBuy intValue] > 0)
             {
-                [self startTimer];
+                [[portfolio currentPortfolio] addStock:_tickerSymbol.text :TRUE :sharesToBuy];
+                //Cost spent
+                NSNumber *cost = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
+                
+                //Keep track of the number of shares that we bought
+                sharesBought = sharesToBuy;
+                
+                //Update principal
+                principal = [NSNumber numberWithDouble:([principal doubleValue] - [cost doubleValue])];
+                _principalAmount.text = [principal stringValue];
+                
+                //We use this because we dont want to buy again until we sell what we already bought
+                canBuy = FALSE;
             }
             
-            double currentPercent = fabs(1.00 - ([[tradeThis currentPrice] doubleValue] / [[tradeThis priceBoughtAt] doubleValue]));
+            
+            [self updatePrice];
+            
+            double currentPercent = (1.00 - ([[tradeThis currentPrice] doubleValue] / [[tradeThis priceBoughtAt] doubleValue]));
             
             //Sell at gain
-            if ( currentPercent > [gainSell doubleValue])
+            if ( fabs(currentPercent) > [gainSell doubleValue])
             {
-                [[portfolio currentPortfolio] sellStock:_tickerSymbol.text :TRUE :sharesToBuy];
+                [[portfolio currentPortfolio] sellStock:_tickerSymbol.text :TRUE :sharesBought];
                 
-                gainLoss += ([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue] - [sharesToBuy doubleValue]*[[tradeThis priceBoughtAt] doubleValue]);
+                gainLoss += ([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue] - [sharesBought doubleValue]*[[tradeThis priceBoughtAt] doubleValue]);
                 
                 NSNumber *num = [NSNumber numberWithDouble:gainLoss];
                 _currentGainLoss.text = [num stringValue];
                 
                 //Money made
-                NSNumber *made = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
+                NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
                 //Update principal
                 principal = [NSNumber numberWithDouble:([principal doubleValue] + [made doubleValue])];
+                _principalAmount.text = [principal stringValue];
+                
+                canBuy = TRUE;
             }
-            else if (currentPercent <= [stopLoss doubleValue] ) // sell at loss
+            else if (currentPercent >= [stopLoss doubleValue] ) // sell at loss
             {
-                [[portfolio currentPortfolio] sellStock:_tickerSymbol.text :TRUE :sharesToBuy];
-                gainLoss += ([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue] - [sharesToBuy doubleValue]*[[tradeThis priceBoughtAt] doubleValue]);
+                [[portfolio currentPortfolio] sellStock:_tickerSymbol.text :TRUE :sharesBought];
+                gainLoss += ([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue] - [sharesBought doubleValue]*[[tradeThis priceBoughtAt] doubleValue]);
                 
                 NSNumber *num = [NSNumber numberWithDouble:gainLoss];
                 _currentGainLoss.text = [num stringValue];
                 
                 //Money lost
-                NSNumber *lost = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
+                NSNumber *lost = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
                 //Update principal
                 principal = [NSNumber numberWithDouble:([principal doubleValue] - [lost doubleValue])];
+                _principalAmount.text = [principal stringValue];
+                
+                canBuy = TRUE;
             }
         }
+    }
+    else
+    {
+        [timer invalidate];
+        
+        //If we haven't sold the stock yet, sell it because we are stopping the algorithm
+        if (canBuy == FALSE)
+        {
+            [[portfolio currentPortfolio] sellStock:_tickerSymbol.text :TRUE :sharesBought];
+            
+            gainLoss += ([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue] - [sharesBought doubleValue]*[[tradeThis priceBoughtAt] doubleValue]);
+            
+            NSNumber *num = [NSNumber numberWithDouble:gainLoss];
+            _currentGainLoss.text = [num stringValue];
+            
+            //Money made
+            NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
+            
+            //Update principal
+            principal = [NSNumber numberWithDouble:([principal doubleValue] + [made doubleValue])];
+            _principalAmount.text = [principal stringValue];
+            
+            canBuy = TRUE;
+        }
+    }
+}
+
+- (IBAction)startAlgorithm:(id)sender
+{
+    if (isRunning == TRUE)
+    {
+        return;
+    }
+    else
+    {
+        //Check if ticker symbol is set
+        //Check if principal is set
+        //Check if stop loss percentage set
+        //Check if minimum gain percentage set
+        
+        if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+        {
+            return;
+        }
+        else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+        {
+            return;
+        }
+        else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+        {
+            return;
+        }
+        else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+        {
+            return;
+        }
+        else if ([_tickerSymbol.text compare:@""] == NSOrderedSame)
+        {
+            return;
+        }
+        
+        _tickerSymbol.userInteractionEnabled = FALSE;
+        _currentGainLoss.userInteractionEnabled = FALSE;
+        _stopLossPercentage.userInteractionEnabled = FALSE;
+        _minimumGainPercentage.userInteractionEnabled = FALSE;
+        
+        isRunning = TRUE;
+        tradeThis = [[stocks alloc] initWithTicker:_tickerSymbol.text :TRUE :[NSNumber numberWithInt:1]];
+        
+        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+        principal = [f numberFromString:_principalAmount.text];
+        stopLoss = [f numberFromString:_stopLossPercentage.text];
+        gainSell = [f numberFromString:_minimumGainPercentage.text];
+        
+        [self setTradeFrequency:self];
     }
 }
 
 - (IBAction)stopAlgorithm:(id)sender
 {
     _tickerSymbol.userInteractionEnabled = TRUE;
-    _principalAmount.userInteractionEnabled = TRUE;
     _stopLossPercentage.userInteractionEnabled = TRUE;
     _minimumGainPercentage.userInteractionEnabled = TRUE;
     
-    _tradeFrequencySlider.userInteractionEnabled = FALSE;
     isRunning = FALSE;
+    
+    portfolio *tempP = [portfolio currentPortfolio];
+    tempP.balance = principal;
 }
 @end

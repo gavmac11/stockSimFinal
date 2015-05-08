@@ -223,6 +223,9 @@
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start Amount" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ss0-9t-Gih">
                                 <rect key="frame" x="174" y="58" width="130" height="30"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -237,10 +240,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="35" minValue="5" maxValue="60" translatesAutoresizingMaskIntoConstraints="NO" id="xVd-U1-1SI">
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="35" minValue="5" maxValue="60" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVd-U1-1SI">
                                 <rect key="frame" x="14" y="177" width="292" height="31"/>
                                 <connections>
-                                    <action selector="setTradeFrequency:" destination="8rJ-Kc-sve" eventType="valueChanged" id="kIr-0U-mof"/>
+                                    <action selector="setTradeFrequency:" destination="8rJ-Kc-sve" eventType="valueChanged" id="BIT-Li-P1X"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stop Loss Percentage:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WO2-L0-TZL">
@@ -293,8 +296,7 @@
                         <outlet property="principalAmount" destination="Ss0-9t-Gih" id="RZU-IS-JNc"/>
                         <outlet property="stopLossPercentage" destination="nwO-ZS-Md6" id="EnD-8E-IBw"/>
                         <outlet property="tickerSymbol" destination="ilv-um-WeM" id="m78-co-nyu"/>
-                        <outlet property="tradeFrequency" destination="xVd-U1-1SI" id="gw3-32-06e"/>
-                        <outlet property="tradeFrequencySlider" destination="xVd-U1-1SI" id="Dkk-f7-0HP"/>
+                        <outlet property="tradeFrequencySlider" destination="xVd-U1-1SI" id="0rS-gh-fKx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>

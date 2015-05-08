@@ -11,28 +11,31 @@
 
 @interface SecondViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *tickerSymbol;
-@property (weak, nonatomic) IBOutlet UITextField *principalAmount;
-@property (weak, nonatomic) IBOutlet UITextField *currentGainLoss;
+@property (strong, nonatomic) IBOutlet UITextField *tickerSymbol;
+@property (strong, nonatomic) IBOutlet UITextField *principalAmount;
+@property (strong, nonatomic) IBOutlet UITextField *currentGainLoss;
 
-@property (weak, nonatomic) IBOutlet UITextField *stopLossPercentage;
-@property (weak, nonatomic) IBOutlet UITextField *minimumGainPercentage;
-@property (weak, nonatomic) IBOutlet UISlider *tradeFrequencySlider;
+@property (strong, nonatomic) IBOutlet UITextField *stopLossPercentage;
+@property (strong, nonatomic) IBOutlet UITextField *minimumGainPercentage;
+@property (strong, nonatomic) IBOutlet UISlider *tradeFrequencySlider;
 
 @property BOOL isRunning;
-@property BOOL timerStarted;
 @property NSTimeInterval timeInterval;
-@property NSTimer *timer;
 @property stocks *tradeThis;
 @property double gainLoss;
 @property NSNumber *principal;
+@property BOOL canBuy;
+@property NSNumber *stopLoss;
+@property NSNumber *gainSell;
+@property NSTimer *timer;
+@property NSNumber *sharesBought;
 
 
 - (IBAction)setTradeFrequency:(id)sender;
 - (IBAction)startAlgorithm:(id)sender;
 - (IBAction)stopAlgorithm:(id)sender;
+- (void)stepAlgorithm;
 
--(void)startTimer;
 - (void)updatePrice;
 
 @end

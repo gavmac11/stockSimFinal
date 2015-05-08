@@ -36,7 +36,7 @@
     
     if (self)
     {
-        //Set instance files here!
+        //nothing here
     }
     
     return self;
