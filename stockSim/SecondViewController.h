@@ -23,7 +23,6 @@
 @property NSTimeInterval timeInterval;
 @property stocks *tradeThis;
 @property double gainLoss;
-@property NSNumber *principal;
 @property BOOL canBuy;
 @property NSNumber *stopLoss;
 @property NSNumber *gainSell;

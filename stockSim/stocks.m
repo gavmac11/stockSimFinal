@@ -74,14 +74,6 @@
                     priceBoughtAt = [formatter numberFromString:marketPrice];
                     [self updateCurrentPrice];
                     
-                    portfolio *temp = [portfolio currentPortfolio];
-                    
-                    //Update account balance
-                    temp.balance = [NSNumber numberWithDouble:([temp.balance doubleValue] - ([numberOfShares doubleValue] * [currentPrice doubleValue]))];
-                    
-                    //update account number of trades
-                    temp.tradeCount = [NSNumber numberWithInt:([temp.tradeCount intValue] + 1)];
-                    
                     
                 }
                 else

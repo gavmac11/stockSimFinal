@@ -54,6 +54,12 @@
     {
         stocks *temp = [[stocks alloc]initWithTicker:ticker :marketOrder :numShares];
         [stockList addObject:temp];
+        
+        //Update account balance
+        balance = [NSNumber numberWithDouble:([balance doubleValue] - ([numShares doubleValue] * [[temp currentPrice] doubleValue]))];
+        
+        //update account number of trades
+        tradeCount = [NSNumber numberWithInt:([tradeCount intValue] + 1)];
     }
 }
 

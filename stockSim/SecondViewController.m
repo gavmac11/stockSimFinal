@@ -20,7 +20,6 @@
 @synthesize timeInterval;
 @synthesize tradeThis;
 @synthesize gainLoss;
-@synthesize principal;
 @synthesize canBuy;
 @synthesize stopLoss;
 @synthesize gainSell;
@@ -33,19 +32,13 @@
     // Do any additional setup after loading the view, typically from a nib.
     isRunning = FALSE;
     canBuy = TRUE;
-    principal = [[portfolio currentPortfolio] balance];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     NSNumber *num = [NSNumber numberWithDouble:gainLoss];
     _currentGainLoss.text = [num stringValue];
-    _principalAmount.text = [principal stringValue];
-    
-    if (!isRunning)
-    {
-        principal = [[portfolio currentPortfolio] balance];
-    }
+    _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,10 +70,13 @@
     if (isRunning == TRUE)
     {
         //if you have money
-        if ([principal doubleValue] >= 0.0 && canBuy == TRUE)
+        if ([[[portfolio currentPortfolio] balance] doubleValue] >= 0.0 && canBuy == TRUE)
         {
+            //NSLog(@"%f",[[[portfolio currentPortfolio] balance] doubleValue]);
+            //NSLog(@"%f",[tradeThis.currentPrice doubleValue]);
+            
             //Find how many shares we can buy
-            NSNumber *sharesToBuy = [NSNumber numberWithDouble:([principal doubleValue] / [tradeThis.currentPrice doubleValue])];
+            NSNumber *sharesToBuy = [NSNumber numberWithDouble:([[[portfolio currentPortfolio] balance] doubleValue] / [tradeThis.currentPrice doubleValue])];
             //Round down so we cant overspend
             sharesToBuy = [NSNumber numberWithInt:(floor([sharesToBuy doubleValue]))];
             
@@ -89,14 +85,13 @@
             {
                 [[portfolio currentPortfolio] addStock:_tickerSymbol.text :TRUE :sharesToBuy];
                 //Cost spent
-                NSNumber *cost = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
+               // NSNumber *cost = [NSNumber numberWithDouble:([sharesToBuy doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
                 //Keep track of the number of shares that we bought
                 sharesBought = sharesToBuy;
                 
-                //Update principal
-                principal = [NSNumber numberWithDouble:([principal doubleValue] - [cost doubleValue])];
-                _principalAmount.text = [principal stringValue];
+                //Update principal textfield
+                _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
                 
                 //We use this because we dont want to buy again until we sell what we already bought
                 canBuy = FALSE;
@@ -120,9 +115,8 @@
                 //Money made
                 NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
-                //Update principal
-                principal = [NSNumber numberWithDouble:([principal doubleValue] + [made doubleValue])];
-                _principalAmount.text = [principal stringValue];
+                //Update principal textfield
+                _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
                 
                 canBuy = TRUE;
             }
@@ -137,9 +131,8 @@
                 //Money lost
                 NSNumber *lost = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
-                //Update principal
-                principal = [NSNumber numberWithDouble:([principal doubleValue] - [lost doubleValue])];
-                _principalAmount.text = [principal stringValue];
+                //Update principal textfield
+                _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
                 
                 canBuy = TRUE;
             }
@@ -162,9 +155,8 @@
             //Money made
             NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
             
-            //Update principal
-            principal = [NSNumber numberWithDouble:([principal doubleValue] + [made doubleValue])];
-            _principalAmount.text = [principal stringValue];
+            //Update principal textfield
+            _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
             
             canBuy = TRUE;
         }
@@ -214,7 +206,6 @@
         tradeThis = [[stocks alloc] initWithTicker:_tickerSymbol.text :TRUE :[NSNumber numberWithInt:1]];
         
         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-        principal = [f numberFromString:_principalAmount.text];
         stopLoss = [f numberFromString:_stopLossPercentage.text];
         gainSell = [f numberFromString:_minimumGainPercentage.text];
         
@@ -229,8 +220,5 @@
     _minimumGainPercentage.userInteractionEnabled = TRUE;
     
     isRunning = FALSE;
-    
-    portfolio *tempP = [portfolio currentPortfolio];
-    tempP.balance = principal;
 }
 @end
