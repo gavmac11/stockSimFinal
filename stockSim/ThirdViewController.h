@@ -21,5 +21,6 @@
 
 
 - (IBAction)reset:(id)sender;
+- (IBAction)clearHistory:(id)sender;
 
 @end

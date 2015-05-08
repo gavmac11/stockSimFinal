@@ -135,6 +135,7 @@
         {
             
             numberOfShares = sharesLeftAfterSale;
+            numberOfSharesSold = [NSNumber numberWithInt:([numberOfSharesSold intValue] + [numShares intValue])];
             
             //difference between bought and sold in price
             NSNumber *temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];
@@ -164,6 +165,7 @@
         {
             
             numberOfShares = sharesLeftAfterSale;
+            numberOfSharesSold = [NSNumber numberWithInt:([numberOfSharesSold intValue] + [numShares intValue])];
             
             //difference between bought and sold
             NSNumber *temp = [NSNumber numberWithFloat:([priceBoughtAt floatValue] - [currentPrice floatValue])];

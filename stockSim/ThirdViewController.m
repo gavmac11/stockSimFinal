@@ -50,6 +50,34 @@
     return [[[portfolio currentPortfolio] stockHistoryList] count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    static NSString *CellIdentifier = @"CellIdentifier2";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    UILabel *tick = (UILabel*)[cell.contentView viewWithTag:1];
+    [tick setText:@"Symbol"];
+    [tick setFont:[UIFont systemFontOfSize:12]];
+    
+    UILabel *price = (UILabel*)[cell.contentView viewWithTag:2];
+    [price setText:@"# Sold"];
+    [price setFont:[UIFont systemFontOfSize:12]];
+    
+    UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
+    [gl setText:@"+/-"];
+    [gl setFont:[UIFont systemFontOfSize:12]];
+    
+    return cell;
+    
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *list = [[portfolio currentPortfolio] stockHistoryList];
@@ -62,7 +90,7 @@
     [tick setText:[[list objectAtIndex:indexPath.row] tickerSymbol]];
     
     UILabel *price = (UILabel*)[cell.contentView viewWithTag:2];
-    [price setText:[[[list objectAtIndex:indexPath.row] currentPrice] stringValue]];
+    [price setText:[[[list objectAtIndex:indexPath.row] numberOfSharesSold] stringValue]];
     
     UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
     [gl setText:[[[list objectAtIndex:indexPath.row] gainLoss] stringValue]];
@@ -90,6 +118,13 @@
     tempAccount.tradeCount = [NSNumber numberWithInt:0];
     tempAccount.gainLoss = [NSNumber numberWithDouble:0.00];
     
+    [self viewWillAppear:nil];
+}
+
+- (IBAction)clearHistory:(id)sender
+{
+    portfolio *tempAccount = [portfolio currentPortfolio];
+    tempAccount.stockHistoryList = [[NSMutableArray alloc] init];
     [self viewWillAppear:nil];
 }
 @end

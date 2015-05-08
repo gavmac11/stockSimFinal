@@ -23,4 +23,6 @@
 - (void) addStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
 - (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares;
 
+
+
 @end

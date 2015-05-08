@@ -46,6 +46,37 @@
     return [[[portfolio currentPortfolio] stockList] count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    static NSString *CellIdentifier = @"CellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    UILabel *tick = (UILabel*)[cell.contentView viewWithTag:1];
+    [tick setText:@"Symbol"];
+    [tick setFont:[UIFont systemFontOfSize:12]];
+    
+    UILabel *price = (UILabel*)[cell.contentView viewWithTag:2];
+    [price setText:@"Share $"];
+    [price setFont:[UIFont systemFontOfSize:12]];
+    
+    UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
+    [gl setText:@"+/-"];
+    [gl setFont:[UIFont systemFontOfSize:12]];
+    
+    UILabel *shareNum = (UILabel*)[cell.contentView viewWithTag:4];
+    [shareNum setText:@"# Shares"];
+    [shareNum setFont:[UIFont systemFontOfSize:12]];
+    
+    return cell;
+
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *list = [[portfolio currentPortfolio] stockList];
