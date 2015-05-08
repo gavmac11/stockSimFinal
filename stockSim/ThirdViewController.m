@@ -47,29 +47,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rowCount = 0;
-    
-    for (int i = 0; i < [[[portfolio currentPortfolio] stockList] count]; i++)
-    {
-        if ([[[[portfolio currentPortfolio] stockList] objectAtIndex:i] stillOwn] == FALSE)
-        {
-            rowCount++;
-        }
-    }
-    
-    return rowCount;
+    return [[[portfolio currentPortfolio] stockHistoryList] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray *list = [[portfolio currentPortfolio] stockList];
-    for (int i = 0; i < [list count]; i++)
-    {
-        if ([[list objectAtIndex:i] stillOwn] == TRUE)
-        {
-            [list removeObjectAtIndex:i];
-        }
-    }
+    NSMutableArray *list = [[portfolio currentPortfolio] stockHistoryList];
     
     static NSString *CellIdentifier = @"CellIdentifier2";
     

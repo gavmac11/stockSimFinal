@@ -43,29 +43,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rowCount = 0;
-    
-    for (int i = 0; i < [[[portfolio currentPortfolio] stockList] count]; i++)
-    {
-        if ([[[[portfolio currentPortfolio] stockList] objectAtIndex:i] stillOwn] == TRUE)
-        {
-            rowCount++;
-        }
-    }
-    
-    return rowCount;
+    return [[[portfolio currentPortfolio] stockList] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *list = [[portfolio currentPortfolio] stockList];
-    for (int i = 0; i < [list count]; i++)
-    {
-        if ([[list objectAtIndex:i] stillOwn] == FALSE)
-        {
-            [list removeObjectAtIndex:i];
-        }
-    }
+    
     
     static NSString *CellIdentifier = @"CellIdentifier";
     
@@ -79,6 +63,9 @@
     
     UILabel *gl = (UILabel*)[cell.contentView viewWithTag:3];
     [gl setText:[[[list objectAtIndex:indexPath.row] gainLoss] stringValue]];
+    
+    UILabel *shareNum = (UILabel*)[cell.contentView viewWithTag:4];
+    [shareNum setText:[[[list objectAtIndex:indexPath.row] numberOfShares] stringValue]];
     
     return cell;
 }

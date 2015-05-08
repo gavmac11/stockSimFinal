@@ -17,7 +17,6 @@
 @property NSNumber *numberOfShares;
 @property NSNumber *numberOfSharesSold;
 @property NSNumber *gainLoss;
-@property BOOL stillOwn;
 @property YQL *yql;
 
 - (id)initWithTicker:(NSString*)ticker :(BOOL)marketOrder :(NSNumber*)numShares;

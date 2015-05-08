@@ -113,7 +113,7 @@
                 _currentGainLoss.text = [num stringValue];
                 
                 //Money made
-                NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
+                //NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
                 //Update principal textfield
                 _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
@@ -129,7 +129,7 @@
                 _currentGainLoss.text = [num stringValue];
                 
                 //Money lost
-                NSNumber *lost = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
+                //NSNumber *lost = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
                 
                 //Update principal textfield
                 _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];
@@ -153,7 +153,7 @@
             _currentGainLoss.text = [num stringValue];
             
             //Money made
-            NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
+            //NSNumber *made = [NSNumber numberWithDouble:([sharesBought doubleValue]*[[tradeThis currentPrice] doubleValue])];
             
             //Update principal textfield
             _principalAmount.text = [[[portfolio currentPortfolio] balance] stringValue];

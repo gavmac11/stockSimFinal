@@ -17,7 +17,6 @@
 @synthesize numberOfShares;
 @synthesize numberOfSharesSold;
 @synthesize gainLoss;
-@synthesize stillOwn;
 @synthesize yql;
 
 -(id)initWithTicker:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
@@ -32,7 +31,6 @@
         numberOfShares = numShares;
         numberOfSharesSold = [NSNumber numberWithInt:0];
         gainLoss = [NSNumber numberWithFloat:0.0];
-        stillOwn = TRUE;
         yql = [YQL currentYQL];
         
         
@@ -124,13 +122,13 @@
 
 - (void) sellStock:(NSString *)ticker :(BOOL)marketOrder :(NSNumber*)numShares
 {
-    if (stillOwn == false)
+    NSNumber *sharesLeftAfterSale = [NSNumber numberWithInt:([numberOfShares intValue]- [numShares intValue])];
+    if ([sharesLeftAfterSale intValue] < 0)
     {
         return;
     }
     else
     {
-        NSNumber *sharesLeftAfterSale = [NSNumber numberWithInt:([numberOfShares intValue]- [numShares intValue])];
         [self updateCurrentPrice];
         
         if ([sharesLeftAfterSale intValue] > 0)
@@ -158,6 +156,8 @@
             NSNumber *sellValue = [NSNumber numberWithDouble:([numShares doubleValue] * [currentPrice doubleValue])];
             //Update account balance
             tempAccount.balance = [NSNumber numberWithDouble:([tempAccount.balance doubleValue] + [sellValue doubleValue])];
+            
+            [tempAccount.stockHistoryList addObject:self];
             
         }
         else if ([sharesLeftAfterSale intValue] == 0)
@@ -188,7 +188,8 @@
             //Update account balance
             tempAccount.balance = [NSNumber numberWithDouble:([tempAccount.balance doubleValue] + [sellValue doubleValue])];
             
-            stillOwn = false;
+            [tempAccount.stockHistoryList addObject:self];
+            [tempAccount.stockList removeObject:self];
         }
     }
 }

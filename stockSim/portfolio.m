@@ -14,6 +14,7 @@
 @synthesize tradeCount;
 @synthesize gainLoss;
 @synthesize stockList;
+@synthesize stockHistoryList;
 
 +(portfolio *) currentPortfolio
 {
@@ -40,6 +41,7 @@
     {
         //Set instance files here!
         stockList = [[NSMutableArray alloc] init];
+        stockHistoryList = [[NSMutableArray alloc] init];
         balance = [NSNumber numberWithDouble:5000.00];
         tradeCount = [NSNumber numberWithInt:0];
         gainLoss = [NSNumber numberWithDouble:0.00];
@@ -73,7 +75,8 @@
             if ([[[stockList objectAtIndex:i] tickerSymbol] caseInsensitiveCompare:ticker] == NSOrderedSame)
             {
                 //Only sell if we still own it
-                if ([[stockList objectAtIndex:i] stillOwn] == TRUE)
+                NSNumber *tempNum = [NSNumber numberWithInt:([[[stockList objectAtIndex:i] numberOfShares] intValue] - [numShares intValue])];
+                if ([tempNum intValue] >= 0)
                 {
                     [[stockList objectAtIndex:i] sellStock:ticker :marketOrder :numShares];
                 }
