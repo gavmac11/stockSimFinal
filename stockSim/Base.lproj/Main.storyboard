@@ -157,7 +157,7 @@
                                     <action selector="placeOrder:" destination="0vk-nx-1Kb" eventType="touchUpInside" id="SIT-pk-iye"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Limit Order Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KH-F5-TeF">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Limit Order Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KH-F5-TeF">
                                 <rect key="frame" x="79" y="273" width="130" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -180,6 +180,7 @@
                     <navigationItem key="navigationItem" title="Buy/Sell" id="gbE-7U-YRt"/>
                     <connections>
                         <outlet property="buySellSegmented" destination="VvL-D5-4Lw" id="hMD-hm-Esr"/>
+                        <outlet property="limitOrderPriceLabel" destination="0KH-F5-TeF" id="ByB-ih-0AU"/>
                         <outlet property="limitPrice" destination="drq-uj-36F" id="kxy-Iw-O5N"/>
                         <outlet property="marketLimitSegmented" destination="7L8-ui-3ue" id="xas-PA-Mdj"/>
                         <outlet property="orderComplete" destination="wUD-dz-wBW" id="GVd-9M-CuL"/>

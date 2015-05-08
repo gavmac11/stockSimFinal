@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *limitPrice;
 @property (weak, nonatomic) IBOutlet UILabel *orderComplete;
 @property (weak, nonatomic) IBOutlet UIButton *placeOrderButton;
+@property (weak, nonatomic) IBOutlet UILabel *limitOrderPriceLabel;
 
 
 - (IBAction)marketOrLimitOrder:(id)sender;

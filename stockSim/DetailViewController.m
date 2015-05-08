@@ -39,11 +39,15 @@
     {
         [_limitPrice setEnabled:true];
         [_limitPrice setHidden:FALSE];
+        
+        [_limitOrderPriceLabel setHidden:false];
     }
     else
     {
         [_limitPrice setEnabled:FALSE];
         [_limitPrice setHidden:true];
+        
+        [_limitOrderPriceLabel setHidden:true];
     }
 }
 
